@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def index(request):
+def index_view(request):
     return render(request,'web/index.html')
 
 def about(request):
@@ -9,3 +9,10 @@ def about(request):
 
 def contact(request):
     return render(request,'web/contact.html')
+
+
+def elements(request):
+    return render(request,'web/elements.html')
+
+def test(request):
+    return render(request,'web/test.html')
