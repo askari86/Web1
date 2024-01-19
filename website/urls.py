@@ -5,6 +5,5 @@ urlpatterns = [
     path('',index_view,name="index"),
     path('about',about,name="about"),
     path('contact',contact,name="contact"),
-    path('elements',elements,name="elements"),
     path('test',test,name="test")
 ]
