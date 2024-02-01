@@ -16,3 +16,8 @@ class post(models.Model):
     updated_date=models.DateTimeField(auto_now=True)
     def __str__(self):
         return '{} {}'.format(self.test,self.id)
+    def increment_view_count(self):
+        self.counted_view += 1
+        self.save()
+    class Meta:
+        ordering=['-created_date']
