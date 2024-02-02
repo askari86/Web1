@@ -10,10 +10,11 @@ def blog_home(request):
     return render(request,'blog/blog-home.html',context)
 
 def blog_single(request,pid):
-    pas=get_object_or_404(post,pk=pid,status=1)
+    currnt_time=timezone.now()
+    pas=get_object_or_404(post,pk=pid,status=1,publish_date__lte=currnt_time)
+    pas.counted_views+=1
+    pas.save()
     context={'pot':pas}
-    post.counted_views+=1
-    post.save()
     return render(request,'blog/blog-single.html',context)
     
 
