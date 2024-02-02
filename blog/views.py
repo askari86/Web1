@@ -14,7 +14,7 @@ def blog_single(request,pid):
     context={'pot':pas}
     post.counted_views+=1
     post.save()
-    return render(request,'blog/blog-single.html',context,views)
+    return render(request,'blog/blog-single.html',context)
     
 
 def test(request,pid):
