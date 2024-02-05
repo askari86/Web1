@@ -12,12 +12,11 @@ def blog_home(request):
 def blog_single(request,pid):
     currnt_time=timezone.now()
     pas=get_object_or_404(post,pk=pid,status=1,publish_date__lte=currnt_time)
-    # next_post = post.objects.filter(id__gt=pid, status=1, publish_date__lte=currnt_time).order_by('id').first()
-    # prev_post = post.objects.filter(id__lt=pid, status=1, publish_date__lte=currnt_time).order_by('-id').first()
+    next_post = post.objects.filter(id__gt=pid, status=1, publish_date__lte=currnt_time).order_by('id').first()
+    prev_post = post.objects.filter(id__lt=pid, status=1, publish_date__lte=currnt_time).order_by('-id').first()
     pas.counted_views+=1
     pas.save()
-    # context2={'next_post':next_post,'prev_post':prev_post}
-    context={'pot':pas}
+    context={'pot':pas,'next_post':next_post,'prev_post':prev_post}
     return render(request,'blog/blog-single.html',context)
     
 

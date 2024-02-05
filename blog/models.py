@@ -23,4 +23,4 @@ class post(models.Model):
         return '{} {}'.format(self.test,self.id)
 
     class Meta:
-        ordering=['-created_date']
+        ordering=['created_date']
