@@ -11,4 +11,4 @@ def contact(request):
     return render(request,'web/contact.html')
 
 def test(request):
-    return render(request,'web/test.html')
+    return render(request,'test.html')

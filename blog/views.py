@@ -6,7 +6,6 @@ def blog_home(request):
     currnt_time=timezone.now()
     filter_post=post.objects.filter(status=1,publish_date__lte=currnt_time)
     context={'posts':filter_post}
-    
     return render(request,'blog/blog-home.html',context)
 
 def blog_single(request,pid):
@@ -20,7 +19,14 @@ def blog_single(request,pid):
     return render(request,'blog/blog-single.html',context)
     
 
-def test(request,pid):
-    pas=get_object_or_404(post,pk=pid)
-    context={'pas':pas}
-    return render(request,'test.html',context)
+# def test(request,pid):
+#     pas=get_object_or_404(post,pk=pid)
+#     context={'pas':pas}
+#     return render(request,'train-if.html',context)
+
+def blog_category(request,cat_name):
+    currnt_time=timezone.now()
+    posts=post.objects.filter(status=1,publish_date__lte=currnt_time)
+    posts=posts.filter(category__name=cat_name)
+    context={'posts':posts}
+    return render(request,'blog/blog-home.html',context)
