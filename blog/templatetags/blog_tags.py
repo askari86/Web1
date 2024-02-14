@@ -1,6 +1,7 @@
 from django import template
 from blog.models import post
 from blog.models import Category
+from django.utils import timezone
 register=template.Library()
 
 @register.simple_tag(name='plus')
@@ -34,3 +35,9 @@ def postcategotys():
     for name in category:
        cat_dict[name]=posts.filter(category=name).count()
     return {'categ':cat_dict}
+
+@register.inclusion_tag('web/index-Latestfrom.html')
+def recent():
+    currnt_time=timezone.now()
+    posts=post.objects.filter(status=1,publish_date__lte=currnt_time).order_by('publish_date')[:4]
+    return posts

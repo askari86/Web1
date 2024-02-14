@@ -1,13 +1,16 @@
-{% load blog_tags %}
+<!-- {% load blog_tags %} -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>test</title>
 </head>
+
 <body>
-    <h1><p>this page</p></h1>
+    <!-- <h1><p>this page</p></h1>
     <p>test : {% plus%}</p>
     <p>published post : {% totalpost%}</p>
     <p>total post : {% posts as totalpost %}</p>
@@ -16,7 +19,19 @@
     {% endfor %}
     {% for post in totalpost %}
         <p>content_post:{{post.id}}.{{post.content|snippet}}</p>
-    {% endfor %}
-    <p>{% published %} Hours ago</p>
+    {% endfor %} -->
+    <form action="{% url 'website:test' %}" method="post">
+        {% csrf_token %}
+        <label>name:</label>
+        <input name="name" type="text"><br>
+        <label>email:</label>
+        <input name="email" type="email"><br>
+        <label>subject:</label>
+        <input name="subject" type="text"><br>
+        <label>message:</label>
+        <input name="message" type="text"><br>
+        <button type="submit">submit</button>
+    </form>
 </body>
+
 </html>
