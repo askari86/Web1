@@ -40,4 +40,6 @@ def postcategotys():
 def recent():
     currnt_time=timezone.now()
     posts=post.objects.filter(status=1,publish_date__lte=currnt_time).order_by('publish_date')[:4]
-    return posts
+    context={'posts': posts}
+    return context
+
