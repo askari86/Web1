@@ -35,11 +35,12 @@ def newsletter(request):
         if form.is_valid():
             form.save()
             messages.add_message(request,messages.SUCCESS,'your tikct submited successfuly')
-            return HttpResponseRedirect('/')
-
+            return HttpResponseRedirect('blog/')
     else:
         messages.add_message(request,messages.ERROR,'your tikct didnt submited')
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('blog/')
+
+        
 
 
 def test(request):
