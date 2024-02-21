@@ -18,9 +18,9 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            if form.cleaned_data['name']:
-                form.cleaned_data['name'] = 'ناشناس'
-            form.save()
+            contact = form.save(commit=False)
+            contact.name = "ananymous"
+            contact.save()
             messages.add_message(request,messages.SUCCESS,'your tikct submited successfuly')
         else:
             messages.add_message(request,messages.ERROR,'your tikct didnt submited')

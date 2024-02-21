@@ -8,13 +8,14 @@ class Nameform(forms.Form):
     email=forms.EmailField()
     subject = forms.CharField(max_length=255, required=False)
     message=forms.CharField(widget=forms.Textarea)
+    
 
 class ContactForm(forms.ModelForm):
     captcha = CaptchaField()
 
     class Meta:
         model = Contact
-        fields=  ['name','email','message'] 
+        fields=  '__all__' 
 
 class newslettr(forms.ModelForm):
 
