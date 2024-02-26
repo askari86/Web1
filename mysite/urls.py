@@ -29,13 +29,22 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    #account
+    path('account/',include('accounts.urls')),
+    #index
     path('',include('website.urls')),
+    #blog
     path('blog/',include('blog.urls')),
+    #sitemap
       path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
+    #summernote
      path('summernote/', include('django_summernote.urls')),
+    #robots
     path('robots.txt', include('robots.urls')),
+    #captcha
     path('captcha/', include('captcha.urls')),
+    #debug
     path("__debug__/", include("debug_toolbar.urls")),
 
 ]

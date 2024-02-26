@@ -1,7 +1,10 @@
 from django.shortcuts import render,get_object_or_404
-from blog.models import post
+from blog.models import post,comment
 from django.utils import timezone
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from blog.forms import CommentForm
+from django.contrib import messages
+
 # Create your views here.
 def blog_home(request,**kwargs):
     currnt_time=timezone.now()
@@ -24,14 +27,23 @@ def blog_home(request,**kwargs):
     return render(request,'blog/blog-home.html',context)
 
 def blog_single(request,pid):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'Your comment has been registered. Then the review will be displayed')
+        else:
+            messages.add_message(request,messages.ERROR,'your tikct didnt submited')
     currnt_time=timezone.now()
     pas=get_object_or_404(post,pk=pid,status=1,publish_date__lte=currnt_time)
     next_post = post.objects.filter(id__gt=pid, status=1, publish_date__lte=currnt_time).order_by('id').first()
     prev_post = post.objects.filter(id__lt=pid, status=1, publish_date__lte=currnt_time).order_by('-id').first()
+    comments=comment.objects.filter(post=pas.id,approwed=True)
     pas.counted_views+=1
     pas.save()
-    context={'pot':pas,'next_post':next_post,'prev_post':prev_post}
-    return render(request,'blog/blog-single.html',context)
+    form=CommentForm()
+    context={'pot':pas,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
+    return render(request,'blog/blog-single.html',context)       
     
 
 # def test(request,pid):

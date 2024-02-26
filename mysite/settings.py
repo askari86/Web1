@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django_summernote',
     'django.contrib.sitemaps',
     'website.apps.WebsiteConfig',
-    'blog.apps.BlogConfig'
+    'blog.apps.BlogConfig',
+    'accounts'
 
 ]
 
