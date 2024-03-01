@@ -1,9 +1,11 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from blog.models import post,comment
 from django.utils import timezone
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from blog.forms import CommentForm
 from django.contrib import messages
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def blog_home(request,**kwargs):
@@ -38,13 +40,21 @@ def blog_single(request,pid):
     pas=get_object_or_404(post,pk=pid,status=1,publish_date__lte=currnt_time)
     next_post = post.objects.filter(id__gt=pid, status=1, publish_date__lte=currnt_time).order_by('id').first()
     prev_post = post.objects.filter(id__lt=pid, status=1, publish_date__lte=currnt_time).order_by('-id').first()
-    comments=comment.objects.filter(post=pas.id,approwed=True)
     pas.counted_views+=1
     pas.save()
-    form=CommentForm()
-    context={'pot':pas,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
-    return render(request,'blog/blog-single.html',context)       
-    
+    if pas.login_require==False:
+        comments=comment.objects.filter(post=pas.id,approwed=True)
+        form=CommentForm()
+        context={'pot':pas,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
+        return render(request,'blog/blog-single.html',context)  
+    elif pas.login_require==True and request.user.is_authenticated:
+        pas.login_require=False
+        comments=comment.objects.filter(post=pas.id,approwed=True)
+        form=CommentForm()
+        context={'pot':pas,'comments':comments,'next_post':next_post,'prev_post':prev_post,'form':form}
+        return render(request,'blog/blog-single.html',context)
+    return HttpResponseRedirect(reverse('accounts:login'))
+
 
 # def test(request,pid):
 #     pas=get_object_or_404(post,pk=pid)

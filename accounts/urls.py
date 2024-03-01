@@ -4,9 +4,9 @@ app_name='accounts'
 
 urlpatterns =[
     #login
-    path('login', views.login,name='login'),
+    path('login', views.login_view,name='login'),
     # logout
-    # path('logout', views.logout,name='logout'),
+    path('logout', views.logout_view,name='logout'),
     # registrations
-    path('singup', views.singup,name='singup'),
+    path('singup', views.singup_view,name='singup'),
 ]

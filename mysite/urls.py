@@ -30,7 +30,8 @@ sitemaps = {
 urlpatterns = [
     path('admin/', admin.site.urls),
     #account
-    path('account/',include('accounts.urls')),
+    path('accounts/',include('accounts.urls')),
+    # path("accounts/", include("django.contrib.auth.urls")),
     #index
     path('',include('website.urls')),
     #blog
