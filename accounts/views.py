@@ -9,19 +9,23 @@ from django.contrib import messages
 def login_view(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
-            form = AuthenticationForm(request=request, data=request.POST)
+            form = CustomLog(request=request, data=request.POST)
             if form.is_valid():
                 username = form.cleaned_data.get('username')
-                email=form.changed_data.get('email')
                 password = form.cleaned_data.get('password')
-                user = authenticate(request, username=username, password=password , email=email)
+                user = authenticate(request, username=username, password=password)
                 if user is not None:
+                    login(request, user)
+                    return redirect('/')
+                else:
+                    email = form.cleaned_data.get('email')
+                    user=authenticate(request, email=email, password=password)
                     login(request, user)
                     return redirect('/')
             else:
                 messages.add_message(request,messages.ERROR,'The password or username is incorrect')
                 return redirect('/')
-    form = AuthenticationForm()
+    form = CustomLog()
     context = {'form': form}
     return render(request, 'account/login.html', context)
 
@@ -33,7 +37,7 @@ def logout_view(request):
 def singup_view(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
-            form = UserCreationForm(request.POST)
+            form = CustomUser(request.POST)
             if form.is_valid():
                 form.save()
                 messages.add_message(request,messages.SUCCESS,'You have successfully registered')
@@ -41,10 +45,15 @@ def singup_view(request):
             else:
                 messages.add_message(request,messages.ERROR,'Something went wrong ! Try again')
         
-        form = UserCreationForm()
+        form = CustomUser()
         context = {'form': form}
         return render(request, 'account/singup.html',context)
     else:
         messages.add_message(request,messages.ERROR,'You have already registered')
         return redirect('/')
-        
+class CustomUser(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = UserCreationForm.Meta.fields + ('email', 'username',)
+class CustomLog(AuthenticationForm):
+    class Meta(AuthenticationForm.Meta):
+        fields = AuthenticationForm.Meta.fields + ('email', 'username',)
