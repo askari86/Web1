@@ -4,29 +4,33 @@ from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth.decorators import login_required 
 from django.urls import reverse
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm
+from accounts.forms import ForgotPasswordForm
+import re
+from django.http import HttpResponseRedirect
 # Create your views here.
 
 def login_view(request):
-    if not request.user.is_authenticated:
-        if request.method == 'POST':
-            form = CustomLog(request=request, data=request.POST)
-            if form.is_valid():
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password')
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return redirect('/')
-                else:
-                    email = form.cleaned_data.get('email')
-                    user=authenticate(request, email=email, password=password)
-                    login(request, user)
-                    return redirect('/')
-            else:
-                messages.add_message(request,messages.ERROR,'The password or username is incorrect')
-                return redirect('/')
-    form = CustomLog()
-    context = {'form': form}
+    msg=None
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        if re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', username):
+            email = username
+            user = User.objects.filter(email=email).first()
+            if user:
+                username = user.username
+            user = authenticate(request, username=username, password=password)
+        else:
+            user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            msg = messages.error(request, "User not found. Please try again.")
+    form = AuthenticationForm()
+    context = {'form': form, 'msg': msg}
     return render(request, 'account/login.html', context)
 
 @login_required
@@ -35,7 +39,7 @@ def logout_view(request):
     return redirect('/')
 
 def singup_view(request):
-    if not request.user.is_authenticated:
+   if not request.user.is_authenticated:
         if request.method == 'POST':
             form = CustomUser(request.POST)
             if form.is_valid():
@@ -44,16 +48,9 @@ def singup_view(request):
                 return redirect('/')
             else:
                 messages.add_message(request,messages.ERROR,'Something went wrong ! Try again')
-        
         form = CustomUser()
         context = {'form': form}
-        return render(request, 'account/singup.html',context)
-    else:
-        messages.add_message(request,messages.ERROR,'You have already registered')
-        return redirect('/')
+        return render(request, 'account/singup.html',context)   
 class CustomUser(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ('email', 'username',)
-class CustomLog(AuthenticationForm):
-    class Meta(AuthenticationForm.Meta):
-        fields = AuthenticationForm.Meta.fields + ('email', 'username',)
+        fields = UserCreationForm.Meta.fields + ('email', 'username','first_name', 'last_name', 'password1', 'password2')
