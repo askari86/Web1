@@ -164,7 +164,7 @@ import os
 # EMAIL_HOST_PASSWORD = str(os.getenv('e1386e1386'))
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'elyaaskarii86@gmail.com'
-EMAIL_HOST_PASSWORD = 'e1386e1386'
+EMAIL_HOST_PASSWORD = 'dikpnbixdteylmur'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True

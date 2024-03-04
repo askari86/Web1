@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordResetForm
-from accounts.forms import ForgotPasswordForm
+from django.http import JsonResponse
 import re
 from django.http import HttpResponseRedirect
 # Create your views here.
@@ -55,3 +55,15 @@ def singup_view(request):
 class CustomUser(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields + ('email', 'username','first_name', 'last_name', 'password1', 'password2')
+
+
+def retrieve_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(email=email)
+            # اقدام به بازیابی پسورد
+            return JsonResponse({'message': 'پسورد با موفقیت بازیابی شد.'})
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'ایمیل وارد شده در دیتابیس یافت نشد.'}, status=400)
+    return render(request, 'registration/password_reset_form.html',{'user': user})
