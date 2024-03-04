@@ -48,7 +48,7 @@
 <body>
 <div class="msg">
     <div class="container">
-        <form class="form-signin" method="post" action="{% url 'accounts:login' %}">
+        <form class="form-signin" method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <h1 class="h3 mb-3 font-weight-normal text-center">Please login</h1>
             <div class="form-group">
