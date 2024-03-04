@@ -12,7 +12,7 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 
 def login_view(request):
-    msg=None
+    msg = None
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -28,7 +28,8 @@ def login_view(request):
             login(request, user)
             return redirect('/')
         else:
-            msg = messages.error(request, "User not found. Please try again.")
+            msg = "Invalid credentials. Please try again."
+            messages.error(request, msg)
     form = AuthenticationForm()
     context = {'form': form, 'msg': msg}
     return render(request, 'account/login.html', context)
