@@ -30,6 +30,8 @@ class post(models.Model):
         ordering=['created_date']
     def get_absolute_url(self):
         return reverse('blog:single',kwargs={'pid':self.id})
+    
+
 class comment(models.Model):
     post=models.ForeignKey(post,on_delete=models.CASCADE)
     name=models.CharField(max_length=255)

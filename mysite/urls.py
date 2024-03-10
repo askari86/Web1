@@ -14,13 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include ,re_path
 from django.contrib.sitemaps.views import sitemap
-from django.conf import settings
-from django.conf.urls.static import static
 from website.sitemaps import StaticViewSitemap
 from blog.sitemaps import BlogSitemap
+from django.conf import settings
+from django.conf.urls.static import static
 import debug_toolbar
+from django.views.generic import TemplateView
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -28,26 +29,26 @@ sitemaps = {
 }
 
 urlpatterns = [
+    re_path(r'^', TemplateView.as_view(template_name='home.html')),
     path('admin/', admin.site.urls),
     #account
     path('accounts/',include('accounts.urls')),
-    # path("accounts/", include("django.contrib.auth.urls")),
     #index
     path('',include('website.urls')),
     #blog
     path('blog/',include('blog.urls')),
     #sitemap
-      path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),
     #summernote
-     path('summernote/', include('django_summernote.urls')),
+    path('summernote/', include('django_summernote.urls')),
     #robots
     path('robots.txt', include('robots.urls')),
     #captcha
     path('captcha/', include('captcha.urls')),
     #debug
     path("__debug__/", include("debug_toolbar.urls")),
-
 ]
+
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

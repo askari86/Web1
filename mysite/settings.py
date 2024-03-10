@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'website.apps.WebsiteConfig',
     'blog.apps.BlogConfig',
-     'accounts'
+    'accounts',
+    'compressor',
+    'cssmin',
+    'jsmin',
 
 ]
 
@@ -143,28 +146,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-import os
-
-# LOGIN_REDIRECT_URL = '/'
-
-# EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-# EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_POST = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.environ.get('eleyaaskari@gmail.com')
-# EMAIL_HOST_PASSWORD = os.environ.get('e1386e1386')
-
-# 
-# 
-# 
-# 
-# EMAIL_HOST_USER = str(os.getenv('eleyaaskari@gmail.com'))
-# EMAIL_HOST_PASSWORD = str(os.getenv('e1386e1386'))
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'elyaaskarii86@gmail.com'
 EMAIL_HOST_PASSWORD = 'dikpnbixdteylmur'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
+

@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-uju=r@mdggpolphi8=8f=mpd@_g7v-hdlu=5ufl_mi228ya7-d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://project-askari.ir','project-askari.ir']
 
 
 # INSTALLED_APPS =[]
@@ -42,3 +42,4 @@ MEDIAFILES_DIRS = [
 ]
 
 # CSRF_COOKIE_SECURE = True
+
